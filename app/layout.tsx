@@ -1,6 +1,7 @@
+import { ReactChildren } from "@/types";
 import type { Metadata } from "next";
 import { Inter as FontSans } from "next/font/google";
-import { ReactChildren } from "@/types";
+import { Toaster } from "@/components/ui/toaster";
 import { cn } from "@/lib/utils";
 import "./globals.css";
 
@@ -24,6 +25,7 @@ function RootLayout({ children }: Readonly<ReactChildren>) {
         )}
       >
         {children}
+        <Toaster />
       </body>
     </html>
   );
