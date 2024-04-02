@@ -1,11 +1,14 @@
 type Product = {
-  id: string;
+  id?: string;
   name: string;
   priceInCents: number;
+  description: string;
   isAvailableForPurchase: boolean;
-  _count: {
+  _count?: {
     orders: number;
   };
+  createdAt?: Date;
+  updatedAt?: Date;
 };
 
 interface ReactChildren {

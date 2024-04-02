@@ -1,14 +1,14 @@
-"use client";
+'use client';
 
-import { useState } from "react";
+import { useState } from 'react';
 
-import { useRouter } from "next/navigation";
+import { useRouter } from 'next/navigation';
 
-import { createProduct } from "@/actions";
+import { createProduct, updateProduct } from '@/actions';
 
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useForm } from "react-hook-form";
-import { z } from "zod";
+import { zodResolver } from '@hookform/resolvers/zod';
+import { useForm } from 'react-hook-form';
+import { z } from 'zod';
 
 import {
   Form,
@@ -18,51 +18,73 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-} from "@/components/ui/form";
-import { Input } from "@/components/ui/input";
-import { Textarea } from "@/components/ui/textarea";
-import { Button } from "@/components/ui/button";
-import { useToast } from "./ui/use-toast";
+} from '@/components/ui/form';
+import { Input } from '@/components/ui/input';
+import { Textarea } from '@/components/ui/textarea';
+import { Button } from '@/components/ui/button';
+import { useToast } from './ui/use-toast';
 
-import { formatCurrency } from "@/lib/formatters";
+import { formatCurrency } from '@/lib/formatters';
+import { Product } from '@/types';
 
 const formSchema = z.object({
   name: z.string().min(2, {
-    message: "Name must be at least 2 characters.",
+    message: 'Name must be at least 2 characters.',
   }),
   priceInCents: z.coerce.number().int().positive(),
   description: z
     .string()
-    .min(2, { message: "Description must be at least 2 characters." }),
+    .min(2, { message: 'Description must be at least 2 characters.' }),
 });
 
-function ProductForm() {
+type CurrentProduct = Product | null | undefined;
+
+interface ProductFormProps {
+  product?: Product | null;
+}
+
+function ProductForm({ product }: ProductFormProps) {
+  const isEdit = !!product;
+  const [currentProduct, setCurrentProduct] = useState<CurrentProduct>(product);
+
   const router = useRouter();
   const { toast } = useToast();
 
-  const [priceInCents, setPriceInCents] = useState(0);
+  const [priceInCents, setPriceInCents] = useState(
+    currentProduct?.priceInCents || 0,
+  );
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      name: "",
+      name: currentProduct?.name || '',
       priceInCents,
-      description: "",
+      description: currentProduct?.description || '',
     },
   });
 
   async function handleSubmit(values: z.infer<typeof formSchema>) {
+    const toastTitleOperation = isEdit ? 'updat' : 'creat';
+
     try {
-      await createProduct(values);
+      const operation = isEdit ? updateProduct : createProduct;
 
-      form.reset();
-      setPriceInCents(0);
+      const updatedOrCreatedProduct = await operation({
+        id: product?.id,
+        ...values,
+      });
 
-      router.refresh();
+      setCurrentProduct(updatedOrCreatedProduct);
 
-      toast({ title: "Product created!", variant: "success" });
+      router.push('admin/products');
+
+      toast({ title: `Product ${toastTitleOperation}ed!`, variant: 'success' });
     } catch (error) {
-      toast({ title: "Error creating product", variant: "error" });
+      console.error(error);
+      toast({
+        title: `Error ${toastTitleOperation}ing product!`,
+        variant: 'error',
+      });
     }
   }
 

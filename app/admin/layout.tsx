@@ -1,7 +1,7 @@
-import { ReactChildren } from "@/types";
-import Nav, { NavLink } from "@/components/Nav";
+import { ReactChildren } from '@/types';
+import Nav, { NavLink } from '@/components/Nav';
 
-export const dynamic = "force-dynamic";
+export const dynamic = 'force-dynamic';
 
 function AdminLayout({ children }: Readonly<ReactChildren>) {
   return (
@@ -12,7 +12,7 @@ function AdminLayout({ children }: Readonly<ReactChildren>) {
         <NavLink href="/admin/users">Customers</NavLink>
         <NavLink href="/admin/orders">Sales</NavLink>
       </Nav>
-      <div className="container my-6">{children}</div>
+      <div className="container my-6 pt-[56px]">{children}</div>
     </>
   );
 }

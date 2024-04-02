@@ -62,10 +62,10 @@ const dropdownMenuItems = (product: Product) => [
     </Button>,
     <ToggleProductActiveButton
       key={1}
-      id={product.id}
+      id={product.id!}
       isAvailableForPurchase={product.isAvailableForPurchase}
     />,
-    <DeleteProductButton key={2} id={product.id} />,
+    <DeleteProductButton key={2} id={product.id!} />,
   ],
 ];
 
@@ -82,7 +82,9 @@ async function ProductsTable() {
           <TableHead>Name</TableHead>
           <TableHead>Price</TableHead>
           <TableHead>Orders</TableHead>
-          <TableHead></TableHead>
+          <TableHead>
+            <span className="sr-only">Info</span>
+          </TableHead>
           <TableHead className="w-0">
             <span className="sr-only">Actions</span>
           </TableHead>
