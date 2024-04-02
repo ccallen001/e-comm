@@ -1,8 +1,8 @@
-import { Product } from "@/types";
+import { Product } from '@/types';
 
-import { getAllProducts } from "@/actions";
+import { getAllProducts } from '@/actions';
 
-import Link from "next/link";
+import Link from 'next/link';
 
 import {
   Table,
@@ -12,28 +12,28 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from "@/components/ui/table";
+} from '@/components/ui/table';
 
 import {
   Tooltip,
   TooltipContent,
   TooltipProvider,
   TooltipTrigger,
-} from "@/components/ui/tooltip";
+} from '@/components/ui/tooltip';
 
-import { Button } from "@/components/ui/button";
+import { Button } from '@/components/ui/button';
 
-import PageHeader from "@/components/PageHeader";
+import PageHeader from '@/components/PageHeader';
 
-import DropdownMenu from "@/components/DropdownMenu";
+import DropdownMenu from '@/components/DropdownMenu';
 import {
   DeleteProductButton,
   ToggleProductActiveButton,
-} from "@/components/ProductTableActions";
+} from '@/components/ProductTableActions';
 
-import { CheckCircle2, Info, MoreVertical, XCircle } from "lucide-react";
+import { CheckCircle2, Info, MoreVertical, XCircle } from 'lucide-react';
 
-import { formatCurrency, formatNumber } from "@/lib/formatters";
+import { formatCurrency, formatNumber } from '@/lib/formatters';
 
 const dropdownTrigger = (
   <>
@@ -100,7 +100,7 @@ async function ProductsTable() {
               <TableCell>
                 {formatCurrency(product.priceInCents / 100)}
               </TableCell>
-              <TableCell>{formatNumber(product._count.orders)}</TableCell>
+              <TableCell>{formatNumber(product._count?.orders || 0)}</TableCell>
               <TableCell>
                 <TooltipProvider>
                   <Tooltip>
