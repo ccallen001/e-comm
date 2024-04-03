@@ -76,7 +76,7 @@ function ProductForm({ product }: ProductFormProps) {
 
       setCurrentProduct(updatedOrCreatedProduct);
 
-      router.push('admin/products');
+      router.push('/admin/products');
 
       toast({ title: `Product ${toastTitleOperation}ed!`, variant: 'success' });
     } catch (error) {
